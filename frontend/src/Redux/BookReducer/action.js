@@ -24,12 +24,22 @@ export const getBookFailure = () => {
 };
 
 // method to get data from an api
-export const getDataBooks = async (dispatch) =>  {
+export const getDataBooks = async (dispatch,token) =>  {
   try {
     dispatch(getBookRequest())
-  let res=await axios.get(`http://localhost:${process.env.REACT_APP_JSON_SERVER_PORT}/books`)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  let res=await axios.get(`https://books-library-management-app.onrender.com/user/book`,config)
   console.log(res)
-  dispatch(getBookSuccess(res.data))
+  if(res.status==200){
+    dispatch(getBookSuccess(res.data))
+  }else{
+    dispatch(getBookFailure(res.data.message))
+  }
+  
   } catch (error) {
     console.log(error)
     dispatch(getBookFailure())
@@ -53,12 +63,24 @@ export const postBookFailure = () => {
 
 // method for post Book
 
-export const postBook =async (dispatch,newBook) => {
+export const postBook =async (dispatch,newBook,token) => {
   try {
     dispatch(postBookRequest())
-    let res=await axios.post(`http://localhost:${process.env.REACT_APP_JSON_SERVER_PORT}/books`,newBook)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    let res=await axios.post(`https://books-library-management-app.onrender.com/user/book`,newBook,config)
     console.log(res)
-   getDataBooks(dispatch)
+    if(res.status==201){
+      getDataBooks(dispatch,token)
+      return true
+      
+    }else{
+      dispatch(postBookFailure(res.data.message))
+    }
+   
   } catch (error) {
     console.log(error)
     dispatch(postBookFailure())

@@ -1,11 +1,15 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { postBook } from "../Redux/BookReducer/action";
 import {useState} from 'react'
+import { Navigate } from "react-router-dom";
+import {Dashboard} from './Dashboard'
 
 
 export const AddBook = () => {
 
   const dispatch=useDispatch()
+  const auth=useSelector(store=>store.authReducer)
+  const book=useSelector(store=>store.booksReducer)
 
   const[formdata,setFormdata]=useState({
     
@@ -18,13 +22,20 @@ export const AddBook = () => {
   })
 
   const handleChange=(e)=>{
-    const {name,value}=e.target 
+    let {name,value}=e.target 
+    if(name=='published_year' || name=='isbn'){
+      value=Number(value)
+    }
     setFormdata({...formdata,[name]:value})
   }
 
   const handleSubmit=(e)=>{
     e.preventDefault()
-    postBook(dispatch,formdata)
+    let st=postBook(dispatch,formdata,auth.token)
+    if(st){
+      return <Navigate to='/' />
+    }
+    
   }
 
   return (

@@ -43,12 +43,19 @@ export const Navbar = () => {
           </button>
           </Link>
           <button id="logoutBtn" onClick={logot}>Logout</button>
-          <h5 data-testid="user-token">{state.token}</h5>
-        </>:<Link to='/login'>
+          <h5 data-testid="user-token">{state.user_data.name}</h5>
+        </>:<>
+        <Link to='/login'>
         <button id="loginBtn" className="button">
           Login
         </button>
-        </Link>}
+        </Link>
+        <Link to='/signup'>
+        <button id="loginBtn" className="button">
+          SignUp
+        </button>
+        </Link>
+        </>}
         
 
         

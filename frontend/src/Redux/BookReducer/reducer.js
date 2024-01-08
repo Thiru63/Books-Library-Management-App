@@ -16,7 +16,7 @@ const initialState = {
 };
 
 // Reducer
-export const booksReducer = (state=initialState,{type,payload}) => {
+export const booksReducer = (state=initialState,{type,payload,message}) => {
 
   switch (type) {
     case GET_BOOKS_REQUEST:
@@ -24,19 +24,19 @@ export const booksReducer = (state=initialState,{type,payload}) => {
       break;
 
       case GET_BOOKS_SUCCESS:
-      return {...state,loading:false,success:true,books:payload}
+      return {...state,loading:false,success:true,books:payload,error:null}
       break;
       case GET_BOOKS_FAILURE:
-      return {...state,loading:false,error:true}
+      return {...state,loading:false,error:message}
       break;
       case POST_BOOK_REQUEST:
       return {...state,loading:true}
       break;
       case POST_BOOK_SUCCESS:
-      return {...state,loading:false,success:true,books:[...state.books,payload]}
+      return {...state,loading:false,success:true,books:[...state.books,payload],error:null}
       break;
       case POST_BOOK_FAILURE:
-      return {...state,loading:false,error:true}
+      return {...state,loading:false,error:message}
       break;
   
     default:
